@@ -20,8 +20,19 @@ const createNewPost = (title, content, userId) => {
         }
     });
 }
+const deletePosts = (userId, ids) => {
+    return db.post.deleteMany({
+        where: {
+            authorId: userId,
+            id: {
+                in: ids
+            }
+        }
+    });
+}
 module.exports = {
     getAllPosts,
     getPostsOfUser,
-    createNewPost
+    createNewPost,
+    deletePosts
 }

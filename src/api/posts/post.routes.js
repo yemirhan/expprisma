@@ -1,6 +1,6 @@
 const express = require('express');
 const { isAuthenticated } = require('../../middlewares');
-const { getAllPosts, getPostsOfUser, createNewPost } = require('./post.service');
+const { getAllPosts, getPostsOfUser, createNewPost, deletePosts } = require('./post.service');
 
 
 const router = express.Router();
@@ -29,6 +29,18 @@ router.post('/create', isAuthenticated, async (req, res, next) => {
         const { title, content, userId } = req.body;
         const user = await createNewPost(title, content, userId);
         res.json(user);
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.post('/delete', isAuthenticated, async (req, res, next) => {
+    try {
+        const { userId, ids } = req.body;
+        const user = await deletePosts(userId, ids);
+        res.json({
+            message: 'Deleted successfully'
+        });
     } catch (err) {
         next(err);
     }
